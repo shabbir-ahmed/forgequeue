@@ -15,6 +15,8 @@ function createJob(status: JobStatus = "pending"): Job<{ value: number }> {
 		attempts: 0,
 		createdAt: now,
 		updatedAt: now,
+		priority: 0,
+		runAt: now,
 	};
 }
 

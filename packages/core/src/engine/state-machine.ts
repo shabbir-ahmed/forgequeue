@@ -17,10 +17,9 @@ export class InvalidJobTransitionError extends Error {
 export function transitionJob<TPayload>(
 	job: Job<TPayload>,
 	nextStatus: JobStatus,
+	at: Date = new Date(),
 ): Job<TPayload> {
-	const allowed = allowedTransitions[job.status];
-
-	if (!allowed.includes(nextStatus)) {
+	if (!allowedTransitions[job.status].includes(nextStatus)) {
 		throw new InvalidJobTransitionError(job.status, nextStatus);
 	}
 
@@ -28,6 +27,6 @@ export function transitionJob<TPayload>(
 		...job,
 		status: nextStatus,
 		attempts: nextStatus === "processing" ? job.attempts + 1 : job.attempts,
-		updatedAt: new Date(),
+		updatedAt: new Date(at),
 	};
 }
